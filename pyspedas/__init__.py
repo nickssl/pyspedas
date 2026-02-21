@@ -126,6 +126,7 @@ from .analysis.wavelet2 import wavelet2
 from .analysis.time_domain_filter import time_domain_filter
 from .analysis.find_magnetic_nulls import find_magnetic_nulls_fote, classify_null_type
 from .analysis.lingradest import lingradest
+from .analysis.neutral_sheet import neutral_sheet
 from .cdagui_tools.cdagui import cdagui
 from .cdagui_tools.cdaweb import CDAWeb
 from .cotrans_tools.cotrans import cotrans

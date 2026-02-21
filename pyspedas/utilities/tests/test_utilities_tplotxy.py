@@ -19,8 +19,7 @@ from pyspedas import (
     tplot_names,
 )
 from pyspedas.utilities.config_testing import TESTING_CONFIG
-from pyspedas import bshock_2, mpause_2
-from pyspedas.analysis.neutral_sheet import neutral_sheet
+from pyspedas import bshock_2, mpause_2, neutral_sheet
 
 # Whether to display plots during testing
 global_display = TESTING_CONFIG["global_display"]
