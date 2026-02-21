@@ -72,6 +72,13 @@ def tplotxy3_add_mpause(x,
     dpi: float, optional
         The resolution of the plot in dots per inch
 
+    Note
+    ====
+
+    If you intend to add other elements like neutral sheet or magnetopause boundaries, be sure to
+    use display=False until the final element is added.  Otherwise, closing the plot window will
+    destroy the matplotlib plot objects and cause blank plots.
+
     Returns
     -------
     None
@@ -85,6 +92,7 @@ def tplotxy3_add_mpause(x,
 
     xy_plane = fig.xy_plane
     xz_plane = fig.xz_plane
+    yz_plane = fig.yz_plane
     plot_units = fig.plot_units
 
     unit_conv = 1.0
@@ -105,6 +113,7 @@ def tplotxy3_add_mpause(x,
     this_line = xz_plane.plot(x*unit_conv, y*unit_conv, color=color, linestyle=linestyle, linewidth=linewidth)
 
     if legend_name is not None and legend_name != '':
+        fig.legend().remove()
         try:
             if isinstance(this_line, list):
                 this_line[0].set_label(legend_name)
@@ -112,14 +121,25 @@ def tplotxy3_add_mpause(x,
                 this_line.set_label(legend_name)
         except IndexError:
             pass
+
+        # Align the top of the legend box with the top of the XY subplot, and the right of the legend box with the right of
+        # the YZ subplot
+
+        bbox1 = xy_plane.get_position()
+        bbox2 = yz_plane.get_position()
+
+        legend_bbox_top = bbox1.y1
+        legend_bbox_right = bbox2.x1
+
         handles, labels = xz_plane.get_legend_handles_labels()
-        legend = fig.legend(handles, labels, loc="upper right", markerfirst=True)
-        fig.canvas.draw()
+        legend = fig.legend(handles, labels, loc="upper right", markerfirst=True, bbox_to_anchor=(legend_bbox_right, legend_bbox_top), framealpha=1.0)
 
-        save_plot(save_png=save_png, save_eps=save_eps, save_jpeg=save_jpeg, save_pdf=save_pdf, save_svg=save_svg, dpi=dpi)
+    fig.canvas.draw()
 
-        if display:
-            plt.show()
+    save_plot(save_png=save_png, save_eps=save_eps, save_jpeg=save_jpeg, save_pdf=save_pdf, save_svg=save_svg, dpi=dpi)
+
+    if display:
+        plt.show()
 
 def tplotxy3_add_neutral_sheet( x,
                                 y,
@@ -185,6 +205,13 @@ def tplotxy3_add_neutral_sheet( x,
     dpi: float, optional
         The resolution of the plot in dots per inch
 
+    Note
+    ====
+
+    If you intend to add other elements like neutral sheet or magnetopause boundaries, be sure to
+    use display=False until the final element is added.  Otherwise, closing the plot window will
+    destroy the matplotlib plot objects and cause blank plots.
+
     Returns
     -------
     None
@@ -197,6 +224,9 @@ def tplotxy3_add_neutral_sheet( x,
     # Get axes and properties stored in the fig object
 
     xz_plane = fig.xz_plane
+    xy_plane = fig.xy_plane # We will need this to properly position the legend box
+    yz_plane = fig.yz_plane
+
     plot_units = fig.plot_units
 
     unit_conv = 1.0
@@ -215,6 +245,7 @@ def tplotxy3_add_neutral_sheet( x,
     this_line = xz_plane.plot(x*unit_conv, y*unit_conv, color=color, linestyle=linestyle, linewidth=linewidth)
 
     if legend_name is not None and legend_name != '':
+        fig.legend().remove()
         try:
             if isinstance(this_line, list):
                 this_line[0].set_label(legend_name)
@@ -222,13 +253,24 @@ def tplotxy3_add_neutral_sheet( x,
                 this_line.set_label(legend_name)
         except IndexError:
             pass
-        handles, labels = xz_plane.get_legend_handles_labels()
-        legend = fig.legend(handles, labels, loc="upper right", markerfirst=True)
-        fig.canvas.draw()
 
-        save_plot(save_png=save_png, save_eps=save_eps, save_jpeg=save_jpeg, save_pdf=save_pdf, save_svg=save_svg, dpi=dpi)
-        if display:
-            plt.show()
+        # Align the top of the legend box with the top of the XY subplot, and the right of the legend box with the right of
+        # the YZ subplot
+
+        bbox1 = xy_plane.get_position()
+        bbox2 = yz_plane.get_position()
+
+        legend_bbox_top = bbox1.y1
+        legend_bbox_right = bbox2.x1
+
+        handles, labels = xz_plane.get_legend_handles_labels()
+        legend = fig.legend(handles, labels, loc="upper right", markerfirst=True,bbox_to_anchor=(legend_bbox_right,legend_bbox_top),framealpha=1.0)
+
+    fig.canvas.draw()
+
+    save_plot(save_png=save_png, save_eps=save_eps, save_jpeg=save_jpeg, save_pdf=save_pdf, save_svg=save_svg, dpi=dpi)
+    if display:
+        plt.show()
 
 
 def tplotxy3(tvars,
@@ -326,6 +368,13 @@ def tplotxy3(tvars,
         Use an existing set of axes to plot on (mainly for recursive calls to render composite variables)
 
 
+    Note
+    ====
+
+    If you intend to add other elements like neutral sheet or magnetopause boundaries, be sure to
+    use display=False until the final element is added.  Otherwise, closing the plot window will
+    destroy the matplotlib plot objects and cause blank plots.
+
     Returns
     -------
     Matplotlib fig object
@@ -368,7 +417,7 @@ def tplotxy3(tvars,
             legend_names= None
 
     if fig is None and axis is None:
-        fig, axis = plt.subplots(nrows=2, ncols=2, sharey='row', sharex='col', figsize=(2.5*xsize, 2.5*ysize), layout='constrained')
+        fig, axis = plt.subplots(nrows=2, ncols=2, sharey='row', sharex='col', figsize=(2.5*xsize, 2.5*ysize), constrained_layout=True)
 
     xy_plane = axis[0,0]
     xz_plane = axis[1,0]
@@ -583,12 +632,23 @@ def tplotxy3(tvars,
     # Grab the legend handles created for the XZ plot, and graft them onto the figure
     # instead of showing them on the XZ panel.
 
+    # We need to do a draw() to lay out all the elements, so we know where to put the legend
+    blank_plane.axis('off')
+    fig.canvas.draw()
+
+    # Align the top of the legend box with the top of the XY subplot, and the right of the legend box with the right of
+    # the YZ subplot
+
+    bbox1 = xy_plane.get_position()
+    bbox2 = yz_plane.get_position()
+
+    legend_bbox_top = bbox1.y1
+    legend_bbox_right = bbox2.x1
+
     handles, labels = xz_plane.get_legend_handles_labels()
     if legend_names is not None:
-        bbox_to_anchor = (1.04, 0.5)
-        legend = fig.legend(handles, labels, loc="upper right", markerfirst=True)
+        legend = fig.legend(handles, labels, loc="upper right", markerfirst=True, bbox_to_anchor=(legend_bbox_right,legend_bbox_top))
 
-    blank_plane.axis('off')
     fig.canvas.draw()
 
     save_plot(save_png=save_png, save_eps=save_eps, save_jpeg=save_jpeg, save_pdf=save_pdf, save_svg=save_svg, dpi=dpi)
