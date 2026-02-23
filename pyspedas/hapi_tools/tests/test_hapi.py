@@ -84,7 +84,6 @@ class HAPITests(unittest.TestCase):
         self.assertTrue(data_exists("BZ_GSE"))
 
 
-    @unittest.skip("Server problems at supermag site")
     def test_string_time(self):
         del_data()
         server = "https://supermag.jhuapl.edu/hapi"
