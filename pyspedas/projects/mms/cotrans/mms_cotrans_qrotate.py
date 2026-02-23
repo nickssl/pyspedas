@@ -7,6 +7,7 @@ import logging
 from pyspedas.tplot_tools import get_data, store_data, set_coords
 from pyspedas import tinterpol
 import spacepy.coordinates as coord
+from pyspedas import qslerp
 
 def mms_cotrans_qrotate(in_name, q_name, out_name, out_coord, inverse=False):
     """
@@ -44,14 +45,21 @@ def mms_cotrans_qrotate(in_name, q_name, out_name, out_coord, inverse=False):
         return
 
     if len(data.times) != len(q_data.times):
-        logging.info("Interpolating the data to the MEC quaternion time stamps.")
-        tinterpol(in_name, q_name)
-        data = get_data(in_name + "-itrp")
+        #logging.info("Interpolating the data to the MEC quaternion time stamps.")
+        #tinterpol(in_name, q_name)
+        #data = get_data(in_name + "-itrp")
+        logging.info("Interpolating the MEC quaternions to the data time stamps.")
+        # MMS quaternions are represented as x, y, z, w -- qslerp expects w, x, y, z
+        q_wxyz = q_data.y[:,[3, 0, 1, 2]]
+        q_interp_wxyz = qslerp(q_wxyz, q_data.times, data.times)
+        q_interp_xyzw = q_interp_wxyz[:,[1,2,3,0]]
+    else:
+        q_interp_xyzw = q_data.y
 
     if inverse:
-        quaternion = coord.quaternionConjugate(q_data.y)
+        quaternion = coord.quaternionConjugate(q_interp_xyzw)
     else:
-        quaternion = q_data.y
+        quaternion = q_interp_xyzw
 
     out_data = coord.quaternionRotateVector(quaternion, data.y)
 
