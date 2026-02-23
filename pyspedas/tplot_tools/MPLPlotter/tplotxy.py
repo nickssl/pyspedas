@@ -302,12 +302,8 @@ def tplotxy(tvars,
 
         theta1, theta2 = -90, 90
         if plane=='xy' or plane=='xz':
-            if reverse_x:
-                w1 = Wedge((0, 0),cb_radius, theta1, theta2,fc='white', edgecolor='black' )
-                w2 = Wedge((0, 0), cb_radius, theta2, theta1, fc='black', edgecolor='black')
-            else:
-                w1 = Wedge((0, 0),cb_radius, theta1, theta2,fc='black', edgecolor='black' )
-                w2 = Wedge((0, 0), cb_radius, theta2, theta1, fc='white', edgecolor='black')
+            w1 = Wedge((0, 0), cb_radius, theta1, theta2, fc='white', edgecolor='black')
+            w2 = Wedge((0, 0), cb_radius, theta2, theta1, fc='black', edgecolor='black')
             axis.add_artist(w1)
             axis.add_artist(w2)
         else:
