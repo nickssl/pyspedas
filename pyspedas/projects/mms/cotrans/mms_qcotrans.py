@@ -124,6 +124,7 @@ def mms_qcotrans(
 
         if new_coords not in valid_coords:
             logging.error("Unsupported output coordinate system: " + new_coords)
+            return
 
         if var_coords in ["bcs", "ssl"] or new_coords in ["bcs", "ssl"]:
             logging.warning(
