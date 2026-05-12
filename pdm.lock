@@ -5,7 +5,7 @@
 groups = ["default", "doc", "jupyter", "lint", "maps", "mth5", "setup", "test", "vires"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:6e8185b9e95f0eb645f9e5478f2742b145f07c55cf88ccdcc299dfc65e286887"
+content_hash = "sha256:dc63de4ee8107b0fbca99e65bead4f2f2a397f033978cd13aac92d93c15287d5"
 
 [[metadata.targets]]
 requires_python = ">=3.10"
@@ -1763,7 +1763,7 @@ files = [
 
 [[package]]
 name = "geopack"
-version = "1.0.12"
+version = "1.0.13"
 summary = ""
 dependencies = [
     "numpy==2.2.6; python_full_version < \"3.11\"",
@@ -1772,8 +1772,8 @@ dependencies = [
     "scipy==1.17.0; python_full_version >= \"3.11\"",
 ]
 files = [
-    {file = "geopack-1.0.12-py3-none-any.whl", hash = "sha256:55bc61538b1a38a7a18f034512cf3bb953ac6b3bd0b7ee1a41fc501e66f4bb9c"},
-    {file = "geopack-1.0.12.tar.gz", hash = "sha256:c1b4b3d9f760fdc5f2e4ed625a13ba5aef1edbbef7e1ce3e4028f30d68ade839"},
+    {file = "geopack-1.0.13-py3-none-any.whl", hash = "sha256:7f57bb29df3c2ad295250fa091b82261eeb0e9ebe470d240678efc809d53272a"},
+    {file = "geopack-1.0.13.tar.gz", hash = "sha256:053539ebe4779d437d9c7624d5c9ebeb3973ef25b057ced88564d83cfb89cbba"},
 ]
 
 [[package]]
