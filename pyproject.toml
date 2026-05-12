@@ -83,7 +83,7 @@ classifiers = [
 dependencies = [
     "numpy>=1.20.0",
     "requests>=2.31.0",
-    "geopack==1.0.13",
+    "geopack>=1.0.13",
     "scipy>=1.11.1",
     "cdflib>=1.0.0",
     "spacepy>=0.5.0",

@@ -5,7 +5,7 @@
 groups = ["default", "doc", "jupyter", "lint", "maps", "mth5", "setup", "test", "vires"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:dc63de4ee8107b0fbca99e65bead4f2f2a397f033978cd13aac92d93c15287d5"
+content_hash = "sha256:c59088db1970a62a2d5401edaedd837b248ca73691bdf17a55e68467809e866a"
 
 [[metadata.targets]]
 requires_python = ">=3.10"
